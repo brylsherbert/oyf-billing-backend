@@ -1,4 +1,4 @@
-# OYF Mini Billing API
+****# OYF Mini Billing API
 
 ## 📌 Overview
 
@@ -95,7 +95,3 @@ cat backup.sql | docker exec -i postgres-db psql -U postgres -d oyf-billing-back
 * DELETE `/bills/:id`
 
 ---
-
-## 🎥 Walkthrough
-
-(Insert Loom link here)
