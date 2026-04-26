@@ -25,7 +25,7 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: admin
       DB_NAME: oyf-billing-backend
-      DB_HOST: db   # 🔥 IMPORTANT CHANGE
+      DB_HOST: db
       DB_PORT: 5432
       JWT_SECRET_KEY: zCFvkuJcIFd6WNiYVNLa9ttf2KvcaPHF6ST58ISbmWQ=
       JWT_EXPIRES_IN: 7d
