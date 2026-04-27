@@ -46,7 +46,7 @@ Deployed on Render:
 Base URL:
 
 ```
-https://oyf-billing-backend.onrender.com
+https://oyf-billing-backend-k6kd.onrender.com
 ```
 
 ---
@@ -60,6 +60,9 @@ PORT=5001
 DATABASE_URL=postgres://user:password@host:5432/db
 JWT_SECRET_KEY=your_secret
 JWT_EXPIRES_IN=7d
+NODE_ENV=production
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret_key
 ```
 
 ---
