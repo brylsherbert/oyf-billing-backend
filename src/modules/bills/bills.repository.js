@@ -16,8 +16,8 @@ export const findBillById = async (billId) => {
 };
 
 export const insertBillToDB = async (bill) => {
-  const { id: billId, user_id, title, amount, due_date, is_paid } = bill;
-  const sqlQuery = `INSERT INTO bills (id, user_id, title, amount, due_date, is_paid) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+  const { id: billId, user_id, title, amount, due_date, status } = bill;
+  const sqlQuery = `INSERT INTO bills (id, user_id, title, amount, due_date, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
 
   const result = await pool.query(sqlQuery, [
     billId,
@@ -25,16 +25,16 @@ export const insertBillToDB = async (bill) => {
     title,
     amount,
     due_date,
-    is_paid,
+    status,
   ]);
   return result.rows[0];
 };
 
 export const updateBillInDB = async (bill) => {
-  const { id, title, amount, due_date, is_paid } = bill;
-  const sqlQuery = `UPDATE bills SET title = $1, amount = $2, due_date = $3, is_paid = $4 WHERE id = $5 RETURNING *`;
+  const { id, title, amount, due_date, status } = bill;
+  const sqlQuery = `UPDATE bills SET title = $1, amount = $2, due_date = $3, status = $4 WHERE id = $5 RETURNING *`;
 
-  const result = await pool.query(sqlQuery, [title, amount, due_date, is_paid, id]);
+  const result = await pool.query(sqlQuery, [title, amount, due_date, status, id]);
   return result.rows[0];
 };
 
@@ -47,7 +47,7 @@ export const deleteBillInDB = async (billId) => {
 
 export const updateBillStatus = async (billId, userId, status) =>
 {
-  const sqlQuery = `UPDATE bills SET is_paid = $1 WHERE id = $2 AND user_id = $3`;
+  const sqlQuery = `UPDATE bills SET status = $1 WHERE id = $2 AND user_id = $3`;
   const result = await pool.query(sqlQuery, [status, billId, userId]);
   return result.rowCount > 0;
 };
@@ -91,9 +91,9 @@ function buildWhereClause(baseFilter = {}, filters = {}) {
     conditions.push(`title ILIKE $${values.length}`);
   }
 
-  if (filters.isPaid !== undefined) {
-    values.push(filters.isPaid);
-    conditions.push(`is_paid = $${values.length}`);
+  if (filters.status !== undefined) {
+    values.push(filters.status);
+    conditions.push(`status = $${values.length}`);
   }
 
   return {

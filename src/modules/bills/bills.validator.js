@@ -9,7 +9,7 @@ export const createUserBillSchema = z.object({
     .int({ message: "Amount must be an integer" })
     .min(1, { message: "Amount must be at least 1" }),
   due_date: z.coerce.date({ message: "Due date must be a valid date" }),
-  is_paid: z.boolean({ message: "is_paid must be a boolean value" }),
+  status: z.enum(["unpaid", "pending", "paid", "overdue", "failed", "refunded"], { message: "Status must be a valid status" }),
 });
 
 export const updateUserBillSchema = z.object({
@@ -21,5 +21,5 @@ export const updateUserBillSchema = z.object({
     .int({ message: "Amount must be an integer" })
     .min(1, { message: "Amount must be at least 1" }),
   due_date: z.coerce.date({ message: "Due date must be a valid date" }),
-  is_paid: z.boolean({ message: "is_paid must be a boolean value" }),
+  status: z.enum(["unpaid", "pending", "paid", "overdue", "failed", "refunded"], { message: "Status must be a valid status" }),
 });

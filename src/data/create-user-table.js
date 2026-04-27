@@ -8,7 +8,7 @@ const createTables = async () => {
       title TEXT NOT NULL,
       amount NUMERIC(10,2) NOT NULL,
       due_date DATE NOT NULL,
-      is_paid BOOLEAN DEFAULT FALSE,
+      status TEXT NOT NULL DEFAULT 'unpaid', -- unpaid | pending | paid | overdue | failed | refunded
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       CONSTRAINT fk_user
         FOREIGN KEY(user_id)
@@ -35,6 +35,28 @@ const createTables = async () => {
     )
   `;
 
+  const createPaymentsTableQuery = `
+    CREATE TABLE IF NOT EXISTS payments (
+      id UUID PRIMARY KEY,
+      bill_id UUID NOT NULL,
+      user_id UUID NOT NULL,
+      provider TEXT NOT NULL,
+      provider_payment_id TEXT NOT NULL,
+      amount NUMERIC(10,2) NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      -- pending | succeeded | failed | refunded
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_bill
+        FOREIGN KEY (bill_id)
+        REFERENCES bills(id)
+        ON DELETE CASCADE,
+      CONSTRAINT fk_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+    )
+  `;
+
   try {
     // Add small delay to ensure pool is connected
     await new Promise(r => setTimeout(r, 500));
@@ -43,6 +65,7 @@ const createTables = async () => {
     await pool.query(createBillsTableQuery);
     await pool.query(createIndexForBillsQuery);
     await pool.query(createStripeEventsTableQuery);
+    await pool.query(createPaymentsTableQuery);
     
   } catch (error) {
     throw error;

@@ -29,14 +29,14 @@ export const createUserBill = async (data, currentUser) => {
     throw error;
   }
 
-  const { title, amount, due_date, is_paid } = data;
+  const { title, amount, due_date, status } = data;
   const bill = {
     id: uuidv7(),
     user_id: existingUser.id,
     title,
     amount,
     due_date,
-    is_paid,
+    status,
   };
 
   const result = await billsRepo.insertBillToDB(bill);
@@ -71,14 +71,14 @@ export const updateUserBill = async (billId, data, currentUser) => {
     throw error;
   }
 
-  const { title, amount, due_date, is_paid } = data;
+  const { title, amount, due_date, status } = data;
   const bill = {
     id: existingBill.id,
     user_id: existingUser.id,
     title,
     amount,
     due_date,
-    is_paid,
+    status,
   };
 
   const result = await billsRepo.updateBillInDB(bill);
