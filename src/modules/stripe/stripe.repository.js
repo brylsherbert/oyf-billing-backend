@@ -5,8 +5,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const createPaymentIntent = async (bill) =>
 {
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: bill.amount * 100,
-        currency: "php",
+        amount: (Math.round(Number(bill.amount) * 100)),
+        currency: "usd",
         payment_method_types: ["card"],
         metadata: {
             billId: bill.id,
