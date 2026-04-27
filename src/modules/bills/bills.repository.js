@@ -45,6 +45,13 @@ export const deleteBillInDB = async (billId) => {
   return result.rowCount > 0;
 };
 
+export const updateBillStatus = async (billId, userId, status) =>
+{
+  const sqlQuery = `UPDATE bills SET is_paid = $1 WHERE id = $2 AND user_id = $3`;
+  const result = await pool.query(sqlQuery, [status, billId, userId]);
+  return result.rowCount > 0;
+};
+
 // Helper Function For Filters
 function buildWhereClause(baseFilter = {}, filters = {}) {
   const conditions = [];

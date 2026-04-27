@@ -27,9 +27,11 @@ services:
       DB_NAME: oyf-billing-backend
       DB_HOST: db
       DB_PORT: 5432
-      JWT_SECRET_KEY: zCFvkuJcIFd6WNiYVNLa9ttf2KvcaPHF6ST58ISbmWQ=
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_EXPIRES_IN: 7d
       NODE_ENV: development
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     depends_on:
       - db
 

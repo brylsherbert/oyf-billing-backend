@@ -29,6 +29,12 @@ const createTables = async () => {
 
   const createIndexForBillsQuery = `CREATE INDEX IF NOT EXISTS idx_bills_user_id ON bills(user_id)`;
 
+  const createStripeEventsTableQuery = `
+    CREATE TABLE IF NOT EXISTS stripe_events (
+      id TEXT PRIMARY KEY
+    )
+  `;
+
   try {
     // Add small delay to ensure pool is connected
     await new Promise(r => setTimeout(r, 500));
@@ -36,6 +42,8 @@ const createTables = async () => {
     await pool.query(createUsersTableQuery);
     await pool.query(createBillsTableQuery);
     await pool.query(createIndexForBillsQuery);
+    await pool.query(createStripeEventsTableQuery);
+    
   } catch (error) {
     throw error;
   }

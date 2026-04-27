@@ -46,7 +46,7 @@ Deployed on Render:
 Base URL:
 
 ```
-https://your-api.onrender.com
+https://oyf-billing-backend.onrender.com
 ```
 
 ---
