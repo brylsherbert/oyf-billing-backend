@@ -34,6 +34,11 @@ export const createPaymentIntent = async (billId, userId) =>
 
     // Create payment intent
     const paymentIntent = await stripeRepo.createPaymentIntent(bill);
+    if (!paymentIntent.id) {
+        const error = new Error("Error creating payment intent!");
+        error.status = 400;
+        throw error;
+    }
 
     // Insert payment into database
     const payment = {
