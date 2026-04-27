@@ -54,6 +54,14 @@ export const createPaymentIntent = async (billId, userId) =>
         throw error;
     }
 
+    // Update bill status to pending
+    const billResult = await billsRepo.updateBillStatus(billId, userId, "pending");
+    if (!billResult) {
+        const error = new Error("Error updating bill status!");
+        error.status = 400;
+        throw error;
+    }
+
     return {
         payment: {
             id: paymentResult.id,
@@ -69,13 +77,15 @@ export const createPaymentIntent = async (billId, userId) =>
 
 export const confirmPayment = async (paymentIntentId) =>
 {
-    const paymentIntent = await stripeRepo.confirmPayment(paymentIntentId);
-    if (!paymentIntent) {
-        const error = new Error("Error confirming payment!");
-        error.status = 400;
-        throw error;
+    try {
+        return await stripeRepo.confirmPayment(paymentIntentId);
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error.message || "Error confirming payment!";
+        const errorObject = new Error(errorMessage);
+        errorObject.status = 400;
+        throw errorObject;
     }
-    return paymentIntent;
 }
 
 export const insertStripeEventToDB = async (eventId) =>
