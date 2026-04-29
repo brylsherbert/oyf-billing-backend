@@ -1,7 +1,7 @@
 import express from "express";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
-import errorHandler from "./middlewares/error-handler.middleware..js";
+import errorHandler from "./middlewares/error-handler.middleware.js";
 import createTables from "./data/create-table.js";
 import authRoutes from "./modules/auth/auth.routes.js";
 import billsRoutes from "./modules/bills/bills.routes.js";
@@ -37,6 +37,7 @@ app.use("/auth", authRoutes);
 app.use("/bills", billsRoutes);
 app.use("/health", healthRoutes);
 app.use("/stripe", stripeRoutes);
+
 // Error handling
 app.use(errorHandler);
 
