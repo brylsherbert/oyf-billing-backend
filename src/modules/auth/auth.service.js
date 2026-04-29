@@ -1,7 +1,7 @@
 import { generateToken } from "../../utils/generate-token.js";
 import { v7 as uuidv7 } from "uuid";
 import * as authRepo from './auth.repository.js';
-import { hash, genSalt, compare} from "bcrypt";
+import { hash, genSalt, compare } from "bcrypt";
 
 export const createUser = async (data, res) =>
 {
@@ -13,9 +13,9 @@ export const createUser = async (data, res) =>
     }
 
     const { username, email, password: bodyPassword } = data;
-    
+
     const salt = await genSalt(10);
-    const hashedPassword = await hash(bodyPassword, salt); 
+    const hashedPassword = await hash(bodyPassword, salt);
 
     const user = {
         id: uuidv7(),
@@ -24,11 +24,20 @@ export const createUser = async (data, res) =>
         password: hashedPassword,
     };
 
+    // Insert user to database
+    const result = await authRepo.insertUserToDB(user);
+    if (!result) {
+        const error = new Error('Failed to create user');
+        error.status = 400;
+        throw error;
+    }
+    
+    const { password, ...userWithOutPassword } = result;
+
     // Generate Token
     const token = generateToken(user.id, res);
-    const { password, ...userWithOutPassword } = await authRepo.insertUserToDB(user);
 
-    return { user: userWithOutPassword, token};
+    return { user: userWithOutPassword, token };
 }
 
 export const loginUser = async (data, res) =>
