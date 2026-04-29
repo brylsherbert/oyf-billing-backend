@@ -2,7 +2,7 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
 import errorHandler from "./middlewares/error-handler.middleware..js";
-import createTables from "./data/create-user-table.js";
+import createTables from "./data/create-table.js";
 import authRoutes from "./modules/auth/auth.routes.js";
 import billsRoutes from "./modules/bills/bills.routes.js";
 import healthRoutes from "./modules/health/health.routes.js";
